@@ -21,6 +21,8 @@ export default class RobotSimulation extends React.Component {
     	this.directions = Constants.directions;
     	this.onChangeHandler = this.onChangeHandler.bind(this);
     	this.onPlaceHandler = this.onPlaceHandler.bind(this);
+    	this.onMoveHandler = this.onMoveHandler.bind(this);
+		this.onReportHandler = this.onReportHandler.bind(this);
     }
 
     onChangeHandler(key, event) {
@@ -39,6 +41,7 @@ export default class RobotSimulation extends React.Component {
 
 	onReportHandler() {
     	console.log("click report");
+    	console.log(this.state);
 	}
 
     render() {
