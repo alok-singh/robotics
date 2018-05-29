@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import '../../../CSS/RobotSimulation/table.less';
-
 export default class Table extends React.Component {
     
     constructor(props) {
@@ -12,13 +10,11 @@ export default class Table extends React.Component {
     	};
     }
 
-    getTableGrid() {
-    	let grids = this.props.grids;
+    getTableGrid(gridsCount) {
     	let gridComponent = [];
-    	
-    	while(grids--){
+    	while(gridsCount--){
     		gridComponent.push(
-    			<div key={grids} className="grid"></div>
+    			<div key={gridsCount} className="grid"></div>
     		)
     	}
     	
@@ -27,12 +23,10 @@ export default class Table extends React.Component {
 
     render() {
         return (
-        	<div className="page-wrapper">
-	        	<div className="table"> 
-	        		{this.getTableGrid()}
-	        		{this.props.children}
-	        	</div>
-	        </div>
+        	<div className="table"> 
+        		{this.getTableGrid(this.props.grids)}
+        		{this.props.children}
+        	</div>
         )
     }
 }

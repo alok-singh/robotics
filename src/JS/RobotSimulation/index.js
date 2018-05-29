@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Table from './Components/table';
-import '../../CSS/RobotSimulation/table.less';
-import Constants from './constants';
+import RobotSimulation from './Components/main';
+
+import '../../CSS/RobotSimulation/index.less';
 
 
-ReactDOM.render(<Table grids={Constants.grids} />, document.getElementById('root'));
+ReactDOM.render(<RobotSimulation />, document.getElementById('root'));
