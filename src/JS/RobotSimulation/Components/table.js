@@ -5,9 +5,6 @@ export default class Table extends React.Component {
     
     constructor(props) {
     	super(props);
-    	this.state = {
-
-    	};
     }
 
     getTableGrid(gridsCount) {
@@ -17,7 +14,6 @@ export default class Table extends React.Component {
     			<div key={gridsCount} className="grid"></div>
     		)
     	}
-    	
     	return gridComponent;
     }
 

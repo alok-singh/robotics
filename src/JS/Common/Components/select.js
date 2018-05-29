@@ -10,13 +10,13 @@ export default class Select extends React.Component {
     getOptions(options) {
         return options.map((option, index) => {
             return <option key={index} value={option.value}>{option.text}</option>
-        })
+        });
     }
 
     render() {
         return (
-        	<select onChange={this.props.onChange} >
-                {this.getOptions(this.props.positionOptions)}   
+        	<select className="ui-select" onChange={this.props.onChange} value={this.props.value} >
+                {this.getOptions(this.props.positionOptions)}
             </select>
         )
     }

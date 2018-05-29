@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-export default class Robot extends React.Component {
+export default class Button extends React.Component {
     
     constructor(props) {
     	super(props);
@@ -9,7 +9,7 @@ export default class Robot extends React.Component {
 
     render() {
         return (
-        	<div className="robot"></div>
+        	<button className="u-button" onClick={this.props.onClick}>{this.props.text}</button>
         )
     }
 }

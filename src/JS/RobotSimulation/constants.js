@@ -1,6 +1,9 @@
 const Constants = {
 	grids: 25,
 	positions: [{
+	    text: 0,
+	    value: 0
+	},{
 	    text: 1,
 	    value: 1
 	}, {
@@ -12,10 +15,20 @@ const Constants = {
 	}, {
 	    text: 4,
 	    value: 4
+	}],
+	directions: [{
+	    text: 'North',
+	    value: 'N'
 	}, {
-	    text: 5,
-	    value: 5
-	}]	
+	    text: 'East',
+	    value: 'E'
+	}, {
+	    text: 'South',
+	    value: 'S'
+	}, {
+	    text: 'West',
+	    value: 'W'
+	}]
 };
 
 export default Constants;
