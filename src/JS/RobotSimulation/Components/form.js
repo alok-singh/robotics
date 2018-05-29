@@ -46,6 +46,12 @@ export default class RobotSimulation extends React.Component {
                     <CommonComponents.Button text="Move" onClick={this.props.onMoveHandler} />
                 </div>
                 <div className="form-element">
+                    <CommonComponents.Button text="Left" onClick={this.props.onLeftTurnHandler} />
+                </div>
+                <div className="form-element">
+                    <CommonComponents.Button text="Right" onClick={this.props.onRightTurnHandler} />
+                </div>
+                <div className="form-element">
                     <CommonComponents.Button text="Report" onClick={this.props.onReportHandler} />
                 </div>
     		</div>

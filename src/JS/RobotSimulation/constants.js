@@ -28,7 +28,13 @@ const Constants = {
 	}, {
 	    text: 'West',
 	    value: 'W'
-	}]
+	}],
+	classMap:{
+		E: 'face-east',
+		W: 'face-west',
+		S: 'face-south',
+		N: ''
+	}
 };
 
 export default Constants;

@@ -15,14 +15,18 @@ export default class RobotSimulation extends React.Component {
     	this.state = {
     		positionX: 0,
     		positionY: 0,
-    		faceDirection: "N"
+    		faceDirection: "N",
+            isPlaced: false
     	};
     	this.positionOptions = Constants.positions;
     	this.directions = Constants.directions;
+        this.classMap = Constants.classMap;
     	this.onChangeHandler = this.onChangeHandler.bind(this);
     	this.onPlaceHandler = this.onPlaceHandler.bind(this);
     	this.onMoveHandler = this.onMoveHandler.bind(this);
-		this.onReportHandler = this.onReportHandler.bind(this);
+        this.onReportHandler = this.onReportHandler.bind(this);
+        this.onLeftTurnHandler = this.onLeftTurnHandler.bind(this);
+		this.onRightTurnHandler = this.onRightTurnHandler.bind(this);
     }
 
     onChangeHandler(key, event) {
@@ -32,7 +36,9 @@ export default class RobotSimulation extends React.Component {
     }
 
     onPlaceHandler(){
-    	console.log("click place");
+    	this.setState({
+            isPlaced: true
+        });
     }
 
     onMoveHandler() {
@@ -44,11 +50,39 @@ export default class RobotSimulation extends React.Component {
     	console.log(this.state);
 	}
 
+    getDirectionIndex() {
+        let currentDirection = this.state.faceDirection;
+        let index = this.directions.findIndex(obj => obj.value == currentDirection);
+        return index;
+    }
+
+    onLeftTurnHandler() {
+        let index = this.getDirectionIndex();
+        let nextIndex = (index+1)%4;
+        let nextDirection = this.directions[nextIndex].value;
+        this.setState({
+            faceDirection: nextDirection
+        });
+    }
+
+    onRightTurnHandler() {
+        let index = this.getDirectionIndex();
+        let nextIndex = index - 1 >= 0 ? index - 1 : 3;
+        let nextDirection = this.directions[nextIndex].value;
+        this.setState({
+            faceDirection: nextDirection
+        });
+    }
+
     render() {
         return (
         	<div className="page-wrapper">
         		<Table grids={Constants.grids}>
-        			<Robot />
+        			{this.state.isPlaced ? 
+                        <Robot rotateClass={this.classMap[this.state.faceDirection]} /> 
+                        : 
+                        null
+                    }
         		</Table>
         		<Form onChangeHandler={this.onChangeHandler}
 					positionX={this.state.positionX}
@@ -57,6 +91,8 @@ export default class RobotSimulation extends React.Component {
 					onPlaceHandler={this.onPlaceHandler}
 					onMoveHandler={this.onMoveHandler}
 					onReportHandler={this.onReportHandler}
+                    onLeftTurnHandler={this.onLeftTurnHandler}
+                    onRightTurnHandler={this.onRightTurnHandler}
 				>
         		</Form>
 	        </div>

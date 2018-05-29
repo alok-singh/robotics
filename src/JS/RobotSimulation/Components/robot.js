@@ -9,7 +9,7 @@ export default class Robot extends React.Component {
 
     render() {
         return (
-        	<div className="robot"></div>
+        	<div className={`robot ${this.props.rotateClass}`}></div>
         )
     }
 }
