@@ -1,0 +1,26 @@
+@import '../Common/base.less';
+
+.page-wrapper {
+	display: flex;
+    justify-content: space-around;
+    margin: 5vh 0vh;
+	.table{
+		width: 90vh;
+		height: 90vh;
+		background: url('/img/table.jpg');
+		display: flex;
+		flex-wrap: wrap;
+		background-size: cover;
+		.grid {
+		    border-right: 1px dashed #333;
+		    border-bottom: 1px dashed #333;
+		    flex-basis: 20%;
+		    &:nth-child(5n) {
+		        border-right: none;
+		    }
+		    &:nth-child(n+21) {
+		        border-bottom: none;
+		    }
+		}
+	}
+}

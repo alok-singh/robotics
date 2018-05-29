@@ -2,7 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = { 
-    entry: './src/JS/index.js',
+    entry: './src/JS/RobotSimulation/index.js',
     output: {
         path: __dirname,
         filename: 'build/js/project.bundle.js'
@@ -18,8 +18,8 @@ module.exports = { 
                 }
             }]
         },{
-        	test: /\.css$/, 
-        	use: ['style-loader', 'css-loader']
+        	test: /\.less$/, 
+        	use: ['style-loader', 'css-loader', 'less-loader']
         }]
     },
     mode: 'development'

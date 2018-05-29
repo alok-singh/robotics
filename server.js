@@ -10,7 +10,7 @@ const app = express();
 // *********************** pages routes ************************** //
 
 app.get('/', function (req, res) {
-	getFileFromPath("./src/HTML/index.html", res);
+	getFileFromPath("./src/HTML/RobotSimulation/index.html", res);
 });
 
 // *********************** static files ************************** //
@@ -20,13 +20,8 @@ app.get('/js/*', function(req, res) {
 	getFileFromPath(filePath, res, {'Content-Type': 'application/javascript'});
 });
 
-app.get('/css/*', function(req, res) {
-	let filePath = "./CSS/" + req.url.split("/").pop();
-	getFileFromPath(filePath, res, {'Content-Type': 'text/css'});
-});
-
 app.get('/img/*', function(req, res) {
-	let filePath = "./Images/" + req.url.split("/").pop();
+	let filePath = "./images/" + req.url.split("/").pop();
 	getFileFromPath(filePath, res, {
 		'Content-Type': 'image/webp', 
 		'Cache-Control': 'public, max-age=31557600'
