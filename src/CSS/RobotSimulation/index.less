@@ -1,9 +1,29 @@
 @import '../Common/base.less';
 @import './robot.less';
 @import './table.less';
+@import './inputFile.less';
 
 .page-wrapper {
 	display: flex;
     justify-content: center;
     margin: 5vh 0vh;
+    .instructions {
+        background: #e6e6e6;
+        padding: 20px;
+        border: 1px solid #ededed;
+        min-width: 30vw;
+    	.form-element {
+    	    margin: 10px 0px;
+    	    text-align: right;
+    	    label {
+    	        margin-right: 10px;
+    	        font-size: 15px;
+    	        color: #848484;
+    	        font-weight: bold;
+    	        text-shadow: 0px 1px 1px #e4e4e4;
+    	        display: inline-block;
+    	        width: 100%;
+    	    }
+    	}
+    }
 }

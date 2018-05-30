@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "./node_modules/webpack/bin/webpack.js --config ./webpack.config.js --progress --colors",
-    "start": "npm run build; npm start startServer",
+    "start": "npm run build; npm run startServer",
     "watch": "./node_modules/webpack/bin/webpack.js --config ./webpack.config.js -w",
     "startServer": "node index.js"
   },
