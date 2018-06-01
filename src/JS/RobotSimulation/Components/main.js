@@ -5,7 +5,7 @@ import Table from './table';
 import Robot from './robot';
 import Constants from '../constants';
 import Form from './form';
-import InputFile from './inputFile';
+import File from './file';
 
 import CommonComponents from '../../Common/Components/main';
 
@@ -14,12 +14,15 @@ export default class RobotSimulation extends React.Component {
     constructor(props) {
     	super(props);
     	this.state = {
-    		positionX: 0,
-    		positionY: 0,
-    		faceDirection: "N",
+            placeX: 0,
+            placeY: 0,
+            robotPositionX: 0,
+            robotPositionY: 0,
+            placeFaceDirection: 'N',
+    		faceDirection: 'N',
             isPlaced: false,
             instructions: [],
-            report: ''
+            report: []
     	};
     	this.positionOptions = Constants.positions;
     	this.directions = Constants.directions;
@@ -40,17 +43,22 @@ export default class RobotSimulation extends React.Component {
 
     onPlaceHandler(){
     	let instructions = this.state.instructions;
-        instructions.push(`place ${this.state.positionX}, ${this.state.positionY}, ${this.state.faceDirection}`);
+        let robotPositionX = this.state.placeX;
+        let robotPositionY = this.state.placeY;
+        let faceDirection = this.state.placeFaceDirection;
+        instructions.push(`place ${robotPositionX}, ${robotPositionY}, ${faceDirection}`);
         this.setState({
             isPlaced: true,
-            report: '',
-            instructions
+            instructions,
+            robotPositionX,
+            robotPositionY,
+            faceDirection
         });
     }
 
     onMoveHandler() {
-        let newPositionX = this.state.positionX;
-        let newPositionY = this.state.positionY;
+        let newPositionX = parseInt(this.state.robotPositionX);
+        let newPositionY = parseInt(this.state.robotPositionY);
         let faceDirection = this.state.faceDirection;
         let instructions = this.state.instructions;
         switch(faceDirection){
@@ -73,9 +81,8 @@ export default class RobotSimulation extends React.Component {
         instructions.push('move');
         
         this.setState({
-            positionX: newPositionX,
-            positionY: newPositionY,
-            report: '',
+            robotPositionX: newPositionX,
+            robotPositionY: newPositionY,
             instructions
         });
     }
@@ -83,9 +90,13 @@ export default class RobotSimulation extends React.Component {
 	onReportHandler() {
         let instructions = this.state.instructions;
         let directionIndex = this.getDirectionIndex();
+        let report = this.state.report;
+
         instructions.push('report');
+        report.push(`Output: ${this.state.robotPositionX}, ${this.state.robotPositionY}, ${this.directions[directionIndex].text}`);
+
         this.setState({
-            report: `Output: ${this.state.positionX}, ${this.state.positionY}, ${this.directions[directionIndex].text}`,
+            report,
             instructions
         });
 	}
@@ -104,7 +115,6 @@ export default class RobotSimulation extends React.Component {
         instructions.push('left');
         this.setState({
             faceDirection: nextDirection,
-            report: '',
             instructions
         });
     }
@@ -117,14 +127,12 @@ export default class RobotSimulation extends React.Component {
         instructions.push('right');
         this.setState({
             faceDirection: nextDirection,
-            report: '',
             instructions
         });
     }
 
     componentWillUpdate(){
-        console.log(this.state.instructions);
-        if(this.state.instructions.length > 10){
+        if(this.state.instructions.length > 100){
             this.state.instructions.shift();
         }
     }
@@ -135,8 +143,8 @@ export default class RobotSimulation extends React.Component {
         		<Table grids={Constants.grids}>
         			{this.state.isPlaced ? 
                         <Robot rotateClass={this.classMap[this.state.faceDirection]} 
-                            positionX={this.state.positionX}
-                            positionY={this.state.positionY}
+                            positionX={this.state.robotPositionX}
+                            positionY={this.state.robotPositionY}
                             faceDirection={this.state.faceDirection}
                         /> 
                         : 
@@ -144,15 +152,16 @@ export default class RobotSimulation extends React.Component {
                     }
         		</Table>
         		<div className="instructions">
-                    <InputFile
+                    <File
                         list={this.state.instructions}
                         title="Input File"
+                        className="input-file"
                     >
-                    </InputFile>
+                    </File>
                     <Form onChangeHandler={this.onChangeHandler}
-    					positionX={this.state.positionX}
-    					positionY={this.state.positionY}
-    					faceDirection={this.state.faceDirection}
+    					positionX={this.state.placeX}
+    					positionY={this.state.placeY}
+    					faceDirection={this.state.placeFaceDirection}
     					onPlaceHandler={this.onPlaceHandler}
     					onMoveHandler={this.onMoveHandler}
     					onReportHandler={this.onReportHandler}
@@ -161,11 +170,12 @@ export default class RobotSimulation extends React.Component {
                         isPlaced={this.state.isPlaced}
     				>
             		</Form>
-                    <InputFile
-                        list={this.state.output}
+                    <File
+                        list={this.state.report}
                         title="Output File"
+                        className="output-file"
                     >
-                    </InputFile>
+                    </File>
                 </div>
 	        </div>
         )

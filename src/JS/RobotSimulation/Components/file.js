@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-export default class Inputfile extends React.Component {
+export default class File extends React.Component {
     
     constructor(props) {
     	super(props);
@@ -17,7 +17,7 @@ export default class Inputfile extends React.Component {
         return (
             <React.Fragment>
                 <div className="text-title">{this.props.title}</div>
-                <div className="command-file">
+                <div className={`command-file ${this.props.className ? this.props.className : ''}`}>
                     {this.getInstructionComponents()}   
                 </div>
             </React.Fragment>

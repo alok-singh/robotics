@@ -11,7 +11,9 @@
         background: #e6e6e6;
         padding: 20px;
         border: 1px solid #ededed;
-        min-width: 30vw;
+        width: 30vw;
+        height: 90vh;
+        overflow: scroll;
     	.form-element {
     	    margin: 10px 0px;
     	    text-align: right;
@@ -24,6 +26,24 @@
     	        display: inline-block;
     	        width: 100%;
     	    }
+    	}
+    	.input-file {
+    		height: 40vh;
+    	}
+
+    	.output-file {
+    		height: 5vh;
+    	}
+
+    	.main-form {
+    	    padding: 5px;
+    	    border-top: 1px dashed #ccc;
+    	    border-bottom: 1px dashed #ccc;
+    	}
+
+    	.button-group {
+    	    display: flex;
+    	    justify-content: space-between;
     	}
     }
 }
