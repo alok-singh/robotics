@@ -18,7 +18,8 @@ export default class RobotSimulation extends React.Component {
     		positionY: 0,
     		faceDirection: "N",
             isPlaced: false,
-            instructions: []
+            instructions: [],
+            report: ''
     	};
     	this.positionOptions = Constants.positions;
     	this.directions = Constants.directions;
@@ -42,6 +43,7 @@ export default class RobotSimulation extends React.Component {
         instructions.push(`place ${this.state.positionX}, ${this.state.positionY}, ${this.state.faceDirection}`);
         this.setState({
             isPlaced: true,
+            report: '',
             instructions
         });
     }
@@ -73,14 +75,17 @@ export default class RobotSimulation extends React.Component {
         this.setState({
             positionX: newPositionX,
             positionY: newPositionY,
+            report: '',
             instructions
         });
     }
 
 	onReportHandler() {
         let instructions = this.state.instructions;
+        let directionIndex = this.getDirectionIndex();
         instructions.push('report');
         this.setState({
+            report: `Output: ${this.state.positionX}, ${this.state.positionY}, ${this.directions[directionIndex].text}`,
             instructions
         });
 	}
@@ -99,6 +104,7 @@ export default class RobotSimulation extends React.Component {
         instructions.push('left');
         this.setState({
             faceDirection: nextDirection,
+            report: '',
             instructions
         });
     }
@@ -111,8 +117,16 @@ export default class RobotSimulation extends React.Component {
         instructions.push('right');
         this.setState({
             faceDirection: nextDirection,
+            report: '',
             instructions
         });
+    }
+
+    componentWillUpdate(){
+        console.log(this.state.instructions);
+        if(this.state.instructions.length > 10){
+            this.state.instructions.shift();
+        }
     }
 
     render() {
@@ -147,6 +161,11 @@ export default class RobotSimulation extends React.Component {
                         isPlaced={this.state.isPlaced}
     				>
             		</Form>
+                    <InputFile
+                        list={this.state.output}
+                        title="Output File"
+                    >
+                    </InputFile>
                 </div>
 	        </div>
         )

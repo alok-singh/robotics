@@ -8,17 +8,19 @@ export default class Inputfile extends React.Component {
     }
 
     getInstructionComponents() {
-        return this.props.list.map(val => {
-            return <div className="command">{val}</div>
+        return this.props.list.map((val, index) => {
+            return <div key={index} className="command">{val}</div>
         });
     }
 
     render() {
         return (
-        	<div className="command-file">
+            <React.Fragment>
                 <div className="text-title">{this.props.title}</div>
-                {this.getInstructionComponents()}   
-            </div>
+                <div className="command-file">
+                    {this.getInstructionComponents()}   
+                </div>
+            </React.Fragment>
         )
     }
 }
