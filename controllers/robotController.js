@@ -13,22 +13,26 @@ export default class RobotController {
 	}
 	createConnection(){
 		let io = socket(this.server);
-		io.on('connection', function(client){
+		io.on('connection', (client) => {
 		  	client.on('update', (data) => { // listen to the event
 		  		this.status = {
 		  			robotPositionX: data.robotPositionX,
 		  			robotPositionY: data.robotPositionY,
 		  			faceDirection: data.faceDirection,
-		  			time: data.time,
-		  			clientID: data.clientID
+		  			time: data.time
 		  		};
-		  		console.log(data);
+		  		setTimeout(()=> {
+		  			io.emit('broadcast', this.status); // emit an event to all connected sockets
+		  		}, 2000);
+		  		console.log('update');
 		  		console.log(this.status);
-		  		io.emit('broadcast', this.status); // emit an event to all connected sockets
 		  	});
 		  	client.on('disconnect', () => {
 		  		console.log('disconnected');
 		  	});
+		  	io.emit('broadcast', this.status);
+		  	console.log('connected');
+	  		console.log(this.status);
 		});
 	}
 }

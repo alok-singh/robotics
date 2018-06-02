@@ -7,6 +7,9 @@ import Constants from '../constants';
 import Form from './form';
 import File from './file';
 
+import Core from '../../Common/main';
+const CommonComponents = Core.Components;
+
 export default class RobotSimulation extends React.Component {
     
     constructor(props) {
@@ -20,9 +23,10 @@ export default class RobotSimulation extends React.Component {
     		faceDirection: 'N',
             isPlaced: false,
             instructions: [],
-            report: []
+            report: [],
+            isMultiInstructorMode: false,
+            isLoading: false
     	};
-        this.socket = io();
     	this.positionOptions = Constants.positions;
     	this.directions = Constants.directions;
         this.classMap = Constants.classMap;
@@ -31,27 +35,36 @@ export default class RobotSimulation extends React.Component {
     	this.onMoveHandler = this.onMoveHandler.bind(this);
         this.onReportHandler = this.onReportHandler.bind(this);
         this.onLeftTurnHandler = this.onLeftTurnHandler.bind(this);
-		this.onRightTurnHandler = this.onRightTurnHandler.bind(this);
+        this.onRightTurnHandler = this.onRightTurnHandler.bind(this);
+		this.changeModeHandler = this.changeModeHandler.bind(this);
         this.requiredEmit = false;
-
     }
 
     eventHandler() {
+        /* 
+            io is available via socket.io.js 
+            it is automatically serverby socket.io to the client
+        */
+        this.socket = io();
         this.socket.on('broadcast', (data) => {
             this.requiredEmit = false;
-            this.setState({
-                isPlaced: true,
-                robotPositionX: data.robotPositionX,
-                robotPositionY: data.robotPositionY,
-                faceDirection: data.faceDirection
-            })
+            if(data && this.state.isMultiInstructorMode){
+                this.setState({
+                    isPlaced: true,
+                    robotPositionX: data.robotPositionX,
+                    robotPositionY: data.robotPositionY,
+                    faceDirection: data.faceDirection,
+                    isMultiInstructorMode: true,
+                    isLoading: false
+                });
+            }
         });
     }
 
     onChangeHandler(key, event) {
     	let state = Object.assign({}, this.state);
     	state[key] = event.target.value;
-    	this.setState(state);
+    	this.setRemoteState(state);
     }
 
     onPlaceHandler(){
@@ -61,7 +74,7 @@ export default class RobotSimulation extends React.Component {
         let faceDirection = this.state.placeFaceDirection;
         instructions.push(`place ${robotPositionX}, ${robotPositionY}, ${faceDirection}`);
         this.requiredEmit = true;
-        this.setState({
+        this.setRemoteState({
             isPlaced: true,
             instructions,
             robotPositionX,
@@ -94,7 +107,8 @@ export default class RobotSimulation extends React.Component {
 
         instructions.push('move');
         this.requiredEmit = true;
-        this.setState({
+        this.setRemoteState({
+            isLoading: this.state.isMultiInstructorMode,
             robotPositionX: newPositionX,
             robotPositionY: newPositionY,
             instructions
@@ -109,7 +123,8 @@ export default class RobotSimulation extends React.Component {
         instructions.push('report');
         report.push(`Output: ${this.state.robotPositionX}, ${this.state.robotPositionY}, ${this.directions[directionIndex].text}`);
 
-        this.setState({
+        this.setRemoteState({
+            isLoading: this.state.isMultiInstructorMode,
             report,
             instructions
         });
@@ -126,9 +141,12 @@ export default class RobotSimulation extends React.Component {
         let nextIndex = index - 1 >= 0 ? index - 1 : 3;
         let nextDirection = this.directions[nextIndex].value;
         let instructions = this.state.instructions;
+        
         instructions.push('left');
+        
         this.requiredEmit = true;
-        this.setState({
+        this.setRemoteState({
+            isLoading: this.state.isMultiInstructorMode,
             faceDirection: nextDirection,
             instructions
         });
@@ -141,30 +159,89 @@ export default class RobotSimulation extends React.Component {
         let instructions = this.state.instructions;
         instructions.push('right');
         this.requiredEmit = true;
-        this.setState({
+        this.setRemoteState({
+            isLoading: this.state.isMultiInstructorMode,
             faceDirection: nextDirection,
             instructions
         });
+    }
+
+    changeModeHandler() {
+        this.state.isMultiInstructorMode = !this.state.isMultiInstructorMode;
+        if(this.state.isMultiInstructorMode){
+            this.eventHandler();
+        }
+        else{
+            this.requiredEmit = false;
+            this.socket.disconnect();
+            delete this.socket;
+            this.setRemoteState({
+                placeX: 0,
+                placeY: 0,
+                robotPositionX: 0,
+                robotPositionY: 0,
+                placeFaceDirection: 'N',
+                faceDirection: 'N',
+                isPlaced: false,
+                instructions: [],
+                report: [],
+                isMultiInstructorMode: false,
+                isLoading: false
+            });
+        }
     }
 
     componentDidUpdate() {
         if(this.state.instructions.length > 100){
             this.state.instructions.shift();
         }
-        if(this.requiredEmit){
-            this.socket.emit('update', Object.assign({}, this.state, {
-                time: (new Date()).getTime()
-            }));
+    }
+
+    getValidProp(propA, propB) {
+        if(typeof propA !== 'undefined'){
+            return propA;
+        }
+        else if(typeof propB !== 'undefined'){
+            return propB;
+        }
+        else{
+            return undefined;
         }
     }
 
-    componentDidMount() {
-        this.eventHandler()
+    setRemoteState(toState) {
+        if(this.requiredEmit && this.state.isMultiInstructorMode){
+            this.setState({
+                isLoading: true
+            });
+            this.socket.emit('update', Object.assign({}, {
+                time: (new Date()).getTime(),
+                robotPositionX: this.getValidProp(toState.robotPositionX, this.state.robotPositionX),
+                robotPositionY: this.getValidProp(toState.robotPositionY, this.state.robotPositionY),
+                faceDirection: this.getValidProp(toState.faceDirection, this.state.faceDirection),
+            }));
+        }
+        else{
+            this.setState({
+                placeX: this.getValidProp(toState.placeX, this.state.placeX),
+                placeY: this.getValidProp(toState.placeY, this.state.placeY),
+                robotPositionX: this.getValidProp(toState.robotPositionX, this.state.robotPositionX),
+                robotPositionY: this.getValidProp(toState.robotPositionY, this.state.robotPositionY),
+                placeFaceDirection: this.getValidProp(toState.placeFaceDirection, this.state.placeFaceDirection),
+                faceDirection: this.getValidProp(toState.faceDirection, this.state.faceDirection),
+                isPlaced: this.getValidProp(toState.isPlaced, this.state.isPlaced),
+                instructions: this.getValidProp(toState.instructions, this.state.instructions),
+                report: this.getValidProp(toState.report, this.state.report),
+                isMultiInstructorMode: this.getValidProp(toState.isMultiInstructorMode, this.state.isMultiInstructorMode),
+                isLoading: false
+            });
+        }
     }
 
     render() {
         return (
         	<div className="page-wrapper">
+                <CommonComponents.Loader isLoading={this.state.isLoading} />
         		<Table grids={Constants.grids}>
         			{this.state.isPlaced ? 
                         <Robot rotateClass={this.classMap[this.state.faceDirection]} 
@@ -177,13 +254,22 @@ export default class RobotSimulation extends React.Component {
                     }
         		</Table>
         		<div className="instructions">
-                    <File
-                        list={this.state.instructions}
-                        title="Input File"
-                        className="input-file"
-                    >
-                    </File>
-                    <Form onChangeHandler={this.onChangeHandler}
+                    <CommonComponents.Checkbox 
+                        label="Check for Multiple Instructions" 
+                        onChange={this.changeModeHandler} 
+                        value={this.state.isMultiInstructorMode}
+                    />
+                    {this.state.isMultiInstructorMode ? 
+                        null
+                        : 
+                        <File
+                            list={this.state.instructions}
+                            title="Input File"
+                            className="input-file"
+                        />
+                    }
+                    <Form 
+                        onChangeHandler={this.onChangeHandler}
     					positionX={this.state.placeX}
     					positionY={this.state.placeY}
     					faceDirection={this.state.placeFaceDirection}
@@ -193,14 +279,12 @@ export default class RobotSimulation extends React.Component {
                         onLeftTurnHandler={this.onLeftTurnHandler}
                         onRightTurnHandler={this.onRightTurnHandler}
                         isPlaced={this.state.isPlaced}
-    				>
-            		</Form>
+    				/>
                     <File
                         list={this.state.report}
                         title="Output File"
                         className="output-file"
-                    >
-                    </File>
+                    />
                 </div>
 	        </div>
         )
