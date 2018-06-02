@@ -7,8 +7,6 @@ import Constants from '../constants';
 import Form from './form';
 import File from './file';
 
-import CommonComponents from '../../Common/Components/main';
-
 export default class RobotSimulation extends React.Component {
     
     constructor(props) {
@@ -24,6 +22,7 @@ export default class RobotSimulation extends React.Component {
             instructions: [],
             report: []
     	};
+        this.socket = io();
     	this.positionOptions = Constants.positions;
     	this.directions = Constants.directions;
         this.classMap = Constants.classMap;
@@ -33,6 +32,20 @@ export default class RobotSimulation extends React.Component {
         this.onReportHandler = this.onReportHandler.bind(this);
         this.onLeftTurnHandler = this.onLeftTurnHandler.bind(this);
 		this.onRightTurnHandler = this.onRightTurnHandler.bind(this);
+        this.requiredEmit = false;
+
+    }
+
+    eventHandler() {
+        this.socket.on('broadcast', (data) => {
+            this.requiredEmit = false;
+            this.setState({
+                isPlaced: true,
+                robotPositionX: data.robotPositionX,
+                robotPositionY: data.robotPositionY,
+                faceDirection: data.faceDirection
+            })
+        });
     }
 
     onChangeHandler(key, event) {
@@ -47,6 +60,7 @@ export default class RobotSimulation extends React.Component {
         let robotPositionY = this.state.placeY;
         let faceDirection = this.state.placeFaceDirection;
         instructions.push(`place ${robotPositionX}, ${robotPositionY}, ${faceDirection}`);
+        this.requiredEmit = true;
         this.setState({
             isPlaced: true,
             instructions,
@@ -79,7 +93,7 @@ export default class RobotSimulation extends React.Component {
         }
 
         instructions.push('move');
-        
+        this.requiredEmit = true;
         this.setState({
             robotPositionX: newPositionX,
             robotPositionY: newPositionY,
@@ -113,6 +127,7 @@ export default class RobotSimulation extends React.Component {
         let nextDirection = this.directions[nextIndex].value;
         let instructions = this.state.instructions;
         instructions.push('left');
+        this.requiredEmit = true;
         this.setState({
             faceDirection: nextDirection,
             instructions
@@ -125,16 +140,26 @@ export default class RobotSimulation extends React.Component {
         let nextDirection = this.directions[nextIndex].value;
         let instructions = this.state.instructions;
         instructions.push('right');
+        this.requiredEmit = true;
         this.setState({
             faceDirection: nextDirection,
             instructions
         });
     }
 
-    componentWillUpdate(){
+    componentDidUpdate() {
         if(this.state.instructions.length > 100){
             this.state.instructions.shift();
         }
+        if(this.requiredEmit){
+            this.socket.emit('update', Object.assign({}, this.state, {
+                time: (new Date()).getTime()
+            }));
+        }
+    }
+
+    componentDidMount() {
+        this.eventHandler()
     }
 
     render() {

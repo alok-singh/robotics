@@ -2,7 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import Constants from '../constants';
-import CommonComponents from '../../Common/Components/main';
+import Core from '../../Common/main';
+
+const CommonComponents = Core.Components;
 
 export default class Form extends React.Component {
     

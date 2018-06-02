@@ -3,9 +3,9 @@
 import http from 'http';
 import express from 'express';
 import fs from 'fs';
+import RobotController from './controllers/robotController';
 
 const app = express();
-
 
 // *********************** pages routes ************************** //
 
@@ -58,5 +58,16 @@ let sendTo404 = (res) => {
 
 // *********************** server start ************************** //
 
-http.createServer(app).listen(8080);
-console.log("server startted in port 8080");
+const server = http.createServer(app);
+const robotController = new RobotController(server);
+
+robotController.createConnection();
+server.listen(8080);
+
+console.log('server started at port 8080');
+
+
+
+
+
+
