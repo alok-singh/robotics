@@ -1,6 +1,7 @@
 ## About Project Robotics
 - It is a simulation of a toy car on a table with dimension 5X5.
 - Car can be moved one step in facing direction turned left or right or can be placed anywhere on the table.
+- The origin (0,0) is considered to be the SOUTH WEST most corner.
 - We have two modes 
 	- Local mode and 
 	- Remote mode(multiple instructors).
@@ -12,7 +13,7 @@
 - run npm start
 - go to http://localhost:8080
 
-### How to input you file in single instructor mode
+### How to input you file in single instructor and multi-instructor mode
 - For "PLACE" command choose positionx positiony and click on place.
 - For "MOVE" command click on move.
 - For turn "LEFT" or "RIGHT" click on respective buttons.

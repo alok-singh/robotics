@@ -8,7 +8,9 @@ import Form from './form';
 import File from './file';
 
 import Core from '../../Common/main';
+
 const CommonComponents = Core.Components;
+const Utils = Core.Utils;
 
 export default class RobotSimulation extends React.Component {
     
@@ -38,6 +40,7 @@ export default class RobotSimulation extends React.Component {
         this.onRightTurnHandler = this.onRightTurnHandler.bind(this);
 		this.changeModeHandler = this.changeModeHandler.bind(this);
         this.requiredEmit = false;
+        this.clientID = Utils.generateID();
     }
 
     eventHandler() {
@@ -46,6 +49,9 @@ export default class RobotSimulation extends React.Component {
             it is automatically serverby socket.io to the client
         */
         this.socket = io();
+        this.setState({
+            isLoading: true
+        });
         this.socket.on('broadcast', (data) => {
             this.requiredEmit = false;
             if(data && this.state.isMultiInstructorMode){
@@ -121,7 +127,7 @@ export default class RobotSimulation extends React.Component {
         let report = this.state.report;
 
         instructions.push('report');
-        report.push(`Output: ${this.state.robotPositionX}, ${this.state.robotPositionY}, ${this.directions[directionIndex].text}`);
+        report.push(`${this.state.robotPositionX}, ${this.state.robotPositionY}, ${this.directions[directionIndex].text}`);
 
         this.setRemoteState({
             isLoading: this.state.isMultiInstructorMode,
@@ -219,6 +225,7 @@ export default class RobotSimulation extends React.Component {
                 robotPositionX: this.getValidProp(toState.robotPositionX, this.state.robotPositionX),
                 robotPositionY: this.getValidProp(toState.robotPositionY, this.state.robotPositionY),
                 faceDirection: this.getValidProp(toState.faceDirection, this.state.faceDirection),
+                clientID: this.clientID
             }));
         }
         else{
