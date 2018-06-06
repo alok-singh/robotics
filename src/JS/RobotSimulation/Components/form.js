@@ -1,3 +1,8 @@
+/*
+    The main purpose of this file is
+    to make form using smaller  common component
+*/
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 

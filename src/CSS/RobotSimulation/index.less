@@ -1,4 +1,11 @@
-@import '../Common/base.less';
+/*
+    This file contains styles and classes and overwrites
+    for the main project it act as the entry point for 
+    the main project
+*/
+
+
+@import (reference) '../Common/variables.less';
 @import './robot.less';
 @import './table.less';
 @import './inputFile.less';
@@ -9,9 +16,9 @@
     margin: 5vh 0vh;
     position: relative;
     .instructions {
-        background: #e6e6e6;
+        background: @backgroundGrey;
         padding: 20px;
-        border: 1px solid #ededed;
+        border: 1px solid @lightBorderColor;
         width: 30vw;
         height: 90vh;
         overflow: scroll;
@@ -20,10 +27,10 @@
     	    text-align: right;
     	    label {
     	        margin-right: 10px;
-    	        font-size: 15px;
-    	        color: #848484;
+    	        font-size: @mediumFontSize;
+    	        color: @labelColor;
     	        font-weight: bold;
-    	        text-shadow: 0px 1px 1px #e4e4e4;
+    	        text-shadow: 0px 1px 1px @textShadowColor;
     	        display: inline-block;
     	        width: 100%;
     	    }
@@ -38,8 +45,8 @@
 
     	.main-form {
     	    padding: 5px;
-    	    border-top: 1px dashed #ccc;
-    	    border-bottom: 1px dashed #ccc;
+    	    border-top: 1px dashed @borderColor;
+    	    border-bottom: 1px dashed @borderColor;
     	}
 
     	.button-group {

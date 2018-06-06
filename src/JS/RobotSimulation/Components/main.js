@@ -1,3 +1,10 @@
+/*
+    This is the main component of
+    this project which contains all
+    the data for the application 
+*/
+
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -50,7 +57,8 @@ export default class RobotSimulation extends React.Component {
         */
         this.socket = io();
         this.setState({
-            isLoading: true
+            isLoading: true,
+            report: []
         });
         this.socket.on('broadcast', (data) => {
             this.requiredEmit = false;
@@ -200,6 +208,9 @@ export default class RobotSimulation extends React.Component {
     componentDidUpdate() {
         if(this.state.instructions.length > 100){
             this.state.instructions.shift();
+        }
+        if(this.state.report.length > 100){
+            this.state.report.shift();
         }
     }
 

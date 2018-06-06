@@ -1,7 +1,14 @@
+/*
+    This file contains commmon component Checkbox
+    which can be used in multiple projects
+
+    
+*/
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-export default class Button extends React.Component {
+export default class Loader extends React.Component {
     render() {
     	let isVisibleClass = this.props.isLoading ? '' : 'u-hide'
         return (

@@ -1,3 +1,9 @@
+/*
+    This file controlls the server
+    and servers static resources and
+    instantiate controllers
+*/
+
 'use strict';
 
 import http from 'http';

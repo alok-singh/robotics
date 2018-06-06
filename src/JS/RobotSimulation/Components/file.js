@@ -1,3 +1,9 @@
+/*
+    The main purpose of this file is
+    to contain all the logic of 
+    displaying the input text 
+*/
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -24,4 +30,3 @@ export default class File extends React.Component {
         )
     }
 }
-

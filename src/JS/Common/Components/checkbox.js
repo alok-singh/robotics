@@ -1,3 +1,10 @@
+/*
+    This file contains commmon component Checkbox
+    which can be used in multiple projects
+    
+*/
+
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -16,4 +23,3 @@ export default class Checkbox extends React.Component {
         )
     }
 }
-

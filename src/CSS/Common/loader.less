@@ -1,17 +1,25 @@
+/*
+    This file contains styles and classes
+    for the overlay react component  
+*/
+
+
+@import (reference) './variables.less';
+
 .u-overlay {
     position: absolute;
     top: 0px;
     bottom: 0px;
     left: 0px;
     right: 0px;
-    background: rgba(0,0,0,0.68);
+    background: @overlayBackground;
     z-index: 1;
     text-align: center;
     display: flex;
 }
 
 .u-loader {
-    color: #fff;
+    color: @white;
     display: inline-block;
     position: relative;
     width: 64px;
@@ -33,7 +41,7 @@
     width: 5px;
     height: 14px;
     border-radius: 20%;
-    background: #fff;
+    background: @white;
 }
 
 .u-loader div:nth-child(1) {

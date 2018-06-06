@@ -1,3 +1,10 @@
+/*
+    This file contains styles and classes and overwrites
+    the custom table which is used only in this perticular page
+*/
+
+@import (reference) '../Common/variables.less';
+
 .table{
 	width: 90vh;
 	height: 90vh;
@@ -7,8 +14,8 @@
 	background-size: cover;
 	position: relative;
 	.grid {
-	    border-right: 1px dashed #333;
-	    border-bottom: 1px dashed #333;
+	    border-right: 1px dashed @tableBorderColor;
+	    border-bottom: 1px dashed @tableBorderColor;
 	    flex-basis: 20%;
 	    &:nth-child(5n) {
 	        border-right: none;

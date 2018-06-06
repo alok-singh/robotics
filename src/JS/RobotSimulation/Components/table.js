@@ -1,3 +1,10 @@
+/*
+    The main purpose of this file is
+    to contain all the logic of 
+    displaying the table
+*/
+
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -26,4 +33,3 @@ export default class Table extends React.Component {
         )
     }
 }
-

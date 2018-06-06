@@ -1,9 +1,17 @@
+/*
+    This file contains styles and classes
+    for the button react component  
+*/
+
+
+@import (reference) './variables.less';
+
 .u-button {
     position: relative;
-    background-color: #2196F3;
+    background-color: @buttonBackground;
     border: none;
-    font-size: 16px;
-    color: #FFFFFF;
+    font-size: @mediumFontSize;
+    color: @white;
     text-align: center;
     -webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
@@ -14,7 +22,7 @@
     border-radius: 2px;
     &:after {
         content: "";
-        background: #a8d7fdbd;
+        background: @buttonOverlay;
         display: block;
         position: absolute;
         padding-top: 300%;

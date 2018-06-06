@@ -1,3 +1,9 @@
+/*
+	This file contains commmon component button
+	which can be used in multiple projects
+	
+*/
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -13,4 +19,3 @@ export default class Button extends React.Component {
         )
     }
 }
-

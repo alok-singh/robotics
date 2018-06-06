@@ -1,3 +1,9 @@
+/*
+    This file contains commmon component Select
+    which can be used in multiple projects
+    
+*/
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -21,4 +27,3 @@ export default class Select extends React.Component {
         )
     }
 }
-

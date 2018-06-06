@@ -1,3 +1,10 @@
+/*
+    The main purpose of this file is
+    to controll the remote robot
+    it contains logic for setting and
+    sharing the robot's information
+*/
+
 import socket from 'socket.io';
 
 export default class RobotController {

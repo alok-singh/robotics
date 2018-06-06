@@ -1,3 +1,9 @@
+/*
+    The main purpose of this file is
+    to contain all constants and 
+    configuration of the application
+*/
+
 const Constants = {
 	grids: 25,
 	positions: [{

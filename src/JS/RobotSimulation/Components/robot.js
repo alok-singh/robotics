@@ -1,3 +1,9 @@
+/*
+    The main purpose of this file is
+    to contain all the logic of 
+    displaying the robot
+*/
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -17,4 +23,3 @@ export default class Robot extends React.Component {
         )
     }
 }
-
